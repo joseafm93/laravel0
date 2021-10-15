@@ -29,11 +29,11 @@ Route::get('usuarios/nuevo', function() {
 });
 
 Route::get('usuarios/{id}', function($id) {
-    return 'mostrando detalles del usuario: ' . $id;
+    return 'Mostrando detalles del usuario: ' . $id;
 }) -> where('id', '[0-9]+');
 
 Route::get('saludo/{name}/{nickname?}', function($name, $nickname = null) {
     return $nickname
-    ? 'Bienvenido ' . $name . '. Tu apodo es ' . $nickname
-    : 'Bienvenido ' . $name . '.';
+    ? 'Bienvenido ' . ucfirst($name) . '. Tu apodo es ' . $nickname
+    : 'Bienvenido ' . ucfirst($name) . '.';
 });
