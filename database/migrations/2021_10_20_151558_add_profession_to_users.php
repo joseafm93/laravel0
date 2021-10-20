@@ -14,7 +14,7 @@ class AddProfessionToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string( 'profession' , 100) -> nullable()->after('email');
+            $table->string( 'profession', 100) -> nullable()->after('email');
         });
     }
 
