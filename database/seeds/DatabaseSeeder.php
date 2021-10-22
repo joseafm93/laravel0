@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
     }
 
-    private function truncateTables(array $tables): void
+    private function truncateTables(array $tables)
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
