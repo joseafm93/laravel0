@@ -9,7 +9,10 @@
             @if( $users->count() )
                 <ul>
                     @foreach($users as $user)
-                        <li>{{ $user->name }}</li>
+                        <li>
+                            {{ $user->name }}, {{ $user->email }}
+                            <a href="{{ route('users.show', $user->id) }}">Ver detalles</a>
+                        </li>
                     @endforeach
                 </ul>
             @else
