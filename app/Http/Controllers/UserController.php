@@ -22,7 +22,12 @@ class UserController extends Controller
 
     public function create()
     {
-        return 'Creando un nuevo usuario';
+        return view('users.create');
+    }
+
+    public function store()
+    {
+        return view('users.store');
     }
 
     public function show(User $user)

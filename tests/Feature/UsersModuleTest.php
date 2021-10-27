@@ -12,7 +12,7 @@ class UsersModuleTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_shows_the_users_list_page()
+    public function it_shows_the_users_list()
     {
         factory(User::class)->create([
             'name' => 'Joel',
@@ -37,9 +37,8 @@ class UsersModuleTest extends TestCase
             ->assertSee('No hay usuarios registrados');
     }
 
-
     /** @test */
-    public function it_displays_the_user_details()
+    public function it_displays_the_users_details()
     {
         $user = factory(User::class)->create([
             'name' => 'José Martínez',
@@ -53,9 +52,9 @@ class UsersModuleTest extends TestCase
     /** @test */
     public function it_loads_the_new_users_page()
     {
-        $this->get('usuarios/nuevo')
+        $this->get('usuarios/crear')
             ->assertStatus(200)
-            ->assertSee('Creando un nuevo usuario');
+            ->assertSee('Crear nuevo usuario');
     }
 
     /** @test */
