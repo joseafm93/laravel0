@@ -29,7 +29,7 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required',
 
         ], [
@@ -66,7 +66,7 @@ class UserController extends Controller
     {
         $data = request()->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => '',
         ]);
 
@@ -79,5 +79,12 @@ class UserController extends Controller
         $user->update($data);
 
         return redirect()->route('users.show', $user);
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        
+        return redirect()->route('users.index');
     }
 }
