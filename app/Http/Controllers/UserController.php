@@ -14,10 +14,6 @@ class UserController extends Controller
         $title = 'Usuarios';
 
         return view('users.index')-> with(compact('users', 'title'));
-
-        /*return view('users.index')
-            ->with('users', User::all())
-            ->with('title', 'Listado de usuarios');*/
     }
 
     public function create()
@@ -84,7 +80,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        
+
         return redirect()->route('users.index');
     }
 }
