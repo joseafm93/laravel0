@@ -3,32 +3,68 @@
 @section('title', 'Listado de usuarios')
 
 @section('content')
+    <h1>{{ $title }}</h1>
+    <p>
+        <a href="{{ route('users.create') }}" class="btn btn-primary">Nuevo usuario</a>
+    </p>
 
-            <h1>{{ $title }}</h1>
-            <p>
-                <a href="{{ route('users.create') }}">Nuevo usuario</a>
-            </p>
+    @if( $users->count() )
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Correo</th>
+                <th scope="col">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach ($users as $user)
+                <tr>
+                    <th scope="row">{{ $user->id }}</th>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>
 
-            @if( $users->count() )
-                <ul>
-                    @foreach($users as $user)
-                        <li>
-                            {{ $user->name }}, {{ $user->email }}
-                            <a href="{{ route('users.show', $user->id) }}">Ver detalles</a> |
-                            <a href={{ route('users.edit', $user) }}>Editar</a> |
-                            <form action="{{ route('users.destroy', $user) }}" method="POST">
-                                {{ csrf_field() }}
-                                {{ method_field('DELETE') }}
-                                <button type="submit">Eliminar</button>
-                            </form>
-                        </li>
-                    @endforeach
-                </ul>
-            @else
-                <p>No hay usuarios registrados</p>
-            @endif
+                        <a href="{{ route('users.show', $user->id) }}" class="btn btn-link">
+                            <span class="oi oi-eye"></span>
+                        </a> |
+                        <a href="{{ route('users.edit', $user) }}" class="btn btn-link">
+                            <span class="oi oi-pencil"></span>
+                        </a> |
+                        <form action="{{ route('users.destroy', $user) }}" method="POST" class="d-inline-block">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+                            <button type="submit" class="btn btn-link">
+                                <span class="oi oi-trash"></span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+
+
+        <ul>
+            @foreach ($users as $user)
+                <li>
+                    {{ $user->name }}, {{ $user->email }}
+                    <a href="{{ route('users.show', $user->id) }}">Ver detalles</a> |
+                    <a href="{{ route('users.edit', $user) }}">Editar</a> |
+                    <form action="{{ route('users.destroy', $user) }}" method="POST">
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </li>
+            @endforeach
+        </ul>
+    @else
+        <p>No hay usuarios registrados</p>
+    @endif
 @endsection
 
 @section('sidebar')
-    Barra lateral
+    Barra Lateral
 @endsection
