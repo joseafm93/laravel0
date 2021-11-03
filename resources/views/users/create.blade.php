@@ -22,15 +22,28 @@
                 <form action="{{ route('users.store') }}" method="post">
                     {{ csrf_field() }}
 
-                    <label for="name">Nombre:</label>
-                    <input type="text" name="name" value="{{ old('name') }}">
-                    <br>
-                    <label for="email">Correo electrónico:</label>
-                    <input type="email" name="email" value="{{ old('email') }}">
-                    <br>
-                    <label for="password">Contraseña:</label>
-                    <input type="password" name="password">
-                    <br>
+                    <div class="form-group">
+                        <label for="name">Nombre:</label>
+                        <input type="text" name="name" value="{{ old('name') }}" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo electrónico:</label>
+                        <input type="email" name="email" value="{{ old('email') }}" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña:</label>
+                        <input type="password" name="password" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="bio">Biografía</label>
+                        <textarea type="text" name="bio" class="form-control">{{ old('bio') }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="twitter">Twitter</label>
+                        <input type="text" name="twitter" class="form-control" {{ old('twitter') }}
+                        placeholder="URL de usuario de Twitter">
+                    </div>
+
 
                     <button type="submit">Crear usuario</button>
                 </form>
