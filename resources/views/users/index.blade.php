@@ -46,7 +46,7 @@
         </table>
 
 
-        <ul>
+<!--        <ul>
             @foreach ($users as $user)
                 <li>
                     {{ $user->name }}, {{ $user->email }}
@@ -59,7 +59,7 @@
                     </form>
                 </li>
             @endforeach
-        </ul>
+        </ul>-->
     @else
         <p>No hay usuarios registrados</p>
     @endif
