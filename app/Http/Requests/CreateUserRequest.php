@@ -29,11 +29,17 @@ class CreateUserRequest extends FormRequest
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
+            'role' => '',
             'bio' => 'required',
             'twitter' => 'nullable|present|url',
             'profession_id' => [
                 'nullable', 'present',
-                Rule::exists('professions', 'id')->whereNull('deleted_at')],
+                Rule::exists('professions', 'id')->whereNull('deleted_at')
+            ],
+            'skills' => [
+                'array',
+                Rule::exists('skills', 'id'),
+            ],
         ];
     }
 
