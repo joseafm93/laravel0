@@ -87,7 +87,7 @@ class CreateUsersTest extends TestCase
     }
 
     /** @test */
-    public function the_user_is_redirected_to_the_previous_page_when_the_validation_fails()
+    public function the_user_is_redirected_to_the_previous_page_when_the_validations_fails()
     {
         $this->handleValidationExceptions();
 
@@ -136,7 +136,7 @@ class CreateUsersTest extends TestCase
 
         $this->from('usuarios/crear')
             ->post('usuarios', $this->withData([
-                'email' => '',
+                'email' => ''
             ]))->assertSessionHasErrors(['email' => 'El campo email es obligatorio']);
     }
 
@@ -164,10 +164,8 @@ class CreateUsersTest extends TestCase
 
         $this->from('usuarios/crear')
             ->post('usuarios', $this->withData([
-                'email' => 'pepe@mail.es'
+                'email' => 'pepe@mail.es',
             ]))->assertSessionHasErrors('email');
-
-        $this->assertEquals(1, User::count());
     }
 
     /** @test */
@@ -219,7 +217,7 @@ class CreateUsersTest extends TestCase
 
         $this->from('usuarios/crear')
             ->post('usuarios', $this->withData([
-                'skills' => 'PHP, JS',
+                'skills' => 'PHP, JS'
             ]))->assertSessionHasErrors(['skills']);
     }
 
@@ -233,17 +231,15 @@ class CreateUsersTest extends TestCase
 
         $this->from('usuarios/crear')
             ->post('usuarios', $this->withData([
-                'skills' => [$skillA->id, $skillB->id + 1],
+                'skills' => [$skillA->id, $skillB->id + 1]
             ]))->assertSessionHasErrors(['skills']);
     }
 
     /** @test */
     public function the_role_field_is_optional()
     {
-        $this->handleValidationExceptions();
-
         $this->post('usuarios', $this->withData([
-            'role' => null,
+            'role' => null
         ]))->assertRedirect('usuarios');
 
         $this->assertDatabaseHas('users', [
@@ -258,7 +254,7 @@ class CreateUsersTest extends TestCase
         $this->handleValidationExceptions();
 
         $this->post('usuarios', $this->withData([
-            'role' => 'invalid-role',
+            'role' => 'invalid-role'
         ]))->assertSessionHasErrors('role');
     }
 
@@ -273,7 +269,8 @@ class CreateUsersTest extends TestCase
 
         $this->from('usuarios/crear')
             ->post('usuarios', $this->withData([
-                'profession_id' => $deletedProfession->id,
+                'profession_id' => $deletedProfession->id
             ]))->assertSessionHasErrors(['profession_id']);
     }
+
 }
