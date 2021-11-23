@@ -10,17 +10,31 @@ use App\User;
 use App\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::query()
+            ->when(request('search'), function ($query, $search) {
+                $query->where('name', 'LIKE', "%{$search}%")
+                    ->orwhere('email', 'LIKE', "%{$search}%");
+            })
+            ->orderBy('created_at', 'DESC')
+            ->paginate();
 
         $title = 'Usuarios';
 
-        return view('users.index')-> with(compact('users', 'title'));
+        return view('users.index')->with(compact('users', 'title'));
+    }
+
+    public function trashed()
+    {
+        $users = User::onlyTrashed()->paginate();
+
+        $title = 'Listado de usuarios en la papelera';
+
+        return view('users.index', compact('users', 'title'));
     }
 
     public function create()
@@ -37,7 +51,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        if($user == null) {
+        if ($user == null) {
             return response()->view('errors.404', [], 404);
         }
 
@@ -56,11 +70,21 @@ class UserController extends Controller
         return redirect()->route('users.show', $user);
     }
 
-    public function destroy(User $user)
+    public function trash(User $user)
     {
+        $user->profile()->delete();
         $user->delete();
 
         return redirect()->route('users.index');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::onlyTrashed()->where('id', $id)->firstOrFail();
+
+        $user->forceDelete();
+
+        return redirect()->route('users.trashed');
     }
 
     protected function form($view, User $user)
@@ -69,7 +93,7 @@ class UserController extends Controller
             'user' => $user,
             'professions' => Profession::orderBy('title', 'ASC')->get(),
             'skills' => Skill::orderBy('name', 'ASC')->get(),
-            'roles' => trans('users.roles'),
+            'roles' => trans('users.roles')
         ]);
     }
 }
