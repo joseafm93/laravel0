@@ -1,6 +1,6 @@
 <?php
 
-use App\{Profession, Skill, User};
+use App\{Profession, Skill, Team, User};
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -14,8 +14,10 @@ class UserSeeder extends Seeder
     {
         $professions = Profession::all();
         $skills = Skill::all();
+        $teams = Team::all();
 
         $user = User::create([
+            'team_id' => $teams->firstWhere('name', 'IES Ingeniero')->id,
             'name' => 'Pepe Pérez',
             'email' => 'pepe@mail.es',
             'password' => bcrypt('123456'),
@@ -28,16 +30,18 @@ class UserSeeder extends Seeder
             'profession_id' => $professions->where('title', 'Desarrollador Back-End')->first()->id,
         ]);
 
-        factory(User::class, 999)->create()->each(function ($user) use ($professions, $skills) {
-            $randomSkills = $skills->random(rand(0,7));
+        foreach (range(1, 999) as $i) {
+            $user = factory(User::class)->create([
+                'team_id' => rand(0,2) ? null : $teams->random()->id,
+            ]);
 
-            $user->skills()->attach($randomSkills);
+            $user->skills()->attach($skills->random(rand(0,7)));
 
             $user->profile()->create(
                 factory(App\UserProfile::class)->raw([
                     'profession_id' => rand(0,2) ? $professions->random()->id : null,
                 ])
             );
-        });
+        }
     }
 }
