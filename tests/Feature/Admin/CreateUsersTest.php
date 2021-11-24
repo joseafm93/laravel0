@@ -14,7 +14,8 @@ class CreateUsersTest extends TestCase
     use RefreshDatabase;
 
     protected $defaultData = [
-        'name' => 'Pepe',
+        'first_name' => 'Pepe',
+        'last_name' => 'Pérez',
         'email' => 'pepe@mail.es',
         'password' => '123456',
         'profession_id' => '',
@@ -55,7 +56,8 @@ class CreateUsersTest extends TestCase
         ]))->assertRedirect('usuarios');
 
         $this->assertCredentials([
-            'name' => 'Pepe',
+            'first_name' => 'Pepe',
+            'last_name' => 'Pérez',
             'email' => 'pepe@mail.es',
             'password' => '123456',
             'role' => 'user'

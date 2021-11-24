@@ -18,7 +18,7 @@ class ListUsersTest extends TestCase
             'name' => 'Joel',
         ]);
         factory(User::class)->create([
-            'name' => 'Ellie',
+            'name' => 'Ellie'
         ]);
 
         $this->get('usuarios')
@@ -26,6 +26,8 @@ class ListUsersTest extends TestCase
             ->assertSee('Usuarios')
             ->assertSee('Joel')
             ->assertSee('Ellie');
+
+        $this->assertNotRepeatedQueries();
     }
 
     /** @test */
@@ -41,8 +43,8 @@ class ListUsersTest extends TestCase
     public function it_shows_the_deleted_users()
     {
         factory(User::class)->create([
-           'name' => 'Joel',
-           'deleted_at' => now(),
+            'name' => 'Joel',
+            'deleted_at' => now(),
         ]);
 
         factory(User::class)->create([
@@ -60,49 +62,43 @@ class ListUsersTest extends TestCase
     public function it_paginates_the_user()
     {
         factory(User::class)->create([
-            'name' => 'Tercer Usuario',
-            'created_at' =>now()->subDays(5),
+            'name' => 'Tercer usuario',
+            'created_at' => now()->subDays(5),
         ]);
-
         factory(User::class)->times(12)->create([
             'created_at' => now()->subDays(4),
         ]);
-
         factory(User::class)->create([
-            'name' => 'Decimoseptimo Usuario',
-            'created_at' =>now()->subDays(2),
+            'name' => 'Decimoséptimo usuario',
+            'created_at' => now()->subDays(2),
         ]);
-
         factory(User::class)->create([
-            'name' => 'Segundo Usuario',
-            'created_at' =>now()->subDays(6),
+            'name' => 'Segundo usuario',
+            'created_at' => now()->subDays(6),
         ]);
-
         factory(User::class)->create([
-            'name' => 'Primer Usuario',
-            'created_at' =>now()->subWeek(),
+            'name' => 'Primer usuario',
+            'created_at' => now()->subWeek(),
         ]);
-
         factory(User::class)->create([
-            'name' => 'Decimosexto Usuario',
-            'created_at' =>now()->subDays(3),
+            'name' => 'Decimosexto usuario',
+            'created_at' => now()->subDays(3),
         ]);
 
         $this->get('usuarios')
             ->assertStatus(200)
             ->assertSeeInOrder([
-               'Decimoseptimo Usuario',
-               'Decimosexto Usuario',
-               'Tercer Usuario',
-
+                'Decimoséptimo usuario',
+                'Decimosexto usuario',
+                'Tercer usuario'
             ])
-            ->assertDontSee('Primer Usuario')
-            ->assertDontSee('Segundo Usuario');
+            ->assertDontSee('Primer usuario')
+            ->assertDontSee('Segundo usuario');
 
         $this->get('usuarios?page=2')
             ->assertSeeInOrder([
-                'Segundo Usuario',
-                'Primer Usuario'
-            ])->assertDontSee('Tercer Usuario');
+                'Segundo usuario',
+                'Primer usuario'
+            ])->assertDontSee('Tercer usuario');
     }
 }
