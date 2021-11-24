@@ -56,4 +56,19 @@ class User extends Authenticatable
     {
         return static::where('email', $email)->first();
     }
+
+    public function scopeSearch($query, $search)
+    {
+        if (empty($search)) {
+            return;
+        }
+
+        $query->where(function ($query) use ($search) {
+            $query->where('name', 'LIKE', "%{$search}%")
+                ->orwhere('email', 'LIKE', "%{$search}%")
+                ->orWhereHas('team', function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%{$search}%");
+                });
+        });
+    }
 }
