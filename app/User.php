@@ -5,7 +5,6 @@ namespace App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -63,16 +62,14 @@ class User extends Authenticatable
             return;
         }
 
-        $query->where(function ($query) use ($search) {
-            $query->where('name', 'LIKE', "%{$search}%")
-                ->orwhere('email', 'LIKE', "%{$search}%")
-                ->orWhereHas('team', function ($query) use ($search) {
-                    $query->where('name', 'LIKE', "%{$search}%");
-                });
-        });
+        $query->whereRaw('CONCAT(first_name, " ", last_name) like ?', "%{$search}%")
+            ->orwhere('email', 'LIKE', "%{$search}%")
+            ->orWhereHas('team', function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            });
     }
 
-    public function getFullNameAttribute()
+    public function getNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
     }
